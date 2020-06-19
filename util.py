@@ -1,6 +1,7 @@
 import os
 import requests
 from selenium.common import exceptions
+from zipfile import ZipFile
 
 def getPath():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -15,8 +16,13 @@ def getDriver(browserVersion):
     latestURL = r.text
     # downloadURL = 'https://chromedriver.storage.googleapis.com/index.html?path=' + latestURL + '/'
     downloadURL = 'https://chromedriver.storage.googleapis.com/' + latestURL + '/chromedriver_win32.zip'
-    print(downloadURL)
     download = requests.get(downloadURL, allow_redirects = True)
     open('chromedriver_win32.zip', 'wb').write(download.content)
 
+    ZipFile('chromedriver_win32.zip', 'r').extractall()
+    os.remove('chromedriver_win32.zip')
 
+# if __name__ == "__main__":
+#     version = "83.0.4103"
+#     os.chdir(os.path.dirname(os.path.abspath(__file__)))
+#     getDriver(version)
